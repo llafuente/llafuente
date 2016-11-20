@@ -1,0 +1,45 @@
+// ie9 is minimum supported by Bootstrap v4 and it doesn't support flexbox
+$enable-flex:               false;
+$enable-grid-classes:       true;
+
+// optional: import local styles first
+@import 'source/scss/main.scss';
+
+// selectively import components we need from font-awesome
+// see: node_modules/font-awesome/scss/font-awesome.scss
+@import 'source/scss/font-awesome.scss';
+
+$body-bg: #fefefe;
+
+// selectively import components we need from bootstrap
+// see: node_modules/bootstrap/scss/bootstrap.scss
+@import 'source/scss/bootstrap.scss';
+
+.blog-description {
+  color: #66aa00;
+  font-weight: bold;
+}
+.blog-footer {
+  background-color: #f0f0f0 !important;
+}
+.sidebar-module-inset {
+  background-color: #f0f0f0 !important;
+}
+pre {
+  padding: 1em;
+}
+.highlight {
+  border-radius: .25rem;
+  border: 0.5px dashed rgba(0,0,0, 0.25);
+}
+h3 {
+  color: #66aa00;
+  border-bottom: 0.5px dashed rgba(102,170,0, 0.25);
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+h4 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
