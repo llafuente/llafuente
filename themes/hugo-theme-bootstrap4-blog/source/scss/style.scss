@@ -10,6 +10,7 @@ $enable-grid-classes:       true;
 @import 'source/scss/font-awesome.scss';
 
 $body-bg: #fefefe;
+$font-family-base: 'Anonymous Pro', monospace;
 
 // selectively import components we need from bootstrap
 // see: node_modules/bootstrap/scss/bootstrap.scss
@@ -42,4 +43,7 @@ h3 {
 h4 {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+.recent-post li {
+  margin-bottom: 0.5rem;
 }

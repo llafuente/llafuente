@@ -1,5 +1,5 @@
-baseurl = "http://www.undefinedman.com/"
-title = "undefinedman"
+baseurl = "/"
+title = "llafuente"
 fulltitle = """
   <span class="alt">undefined</span>man aka llafuente
   <a href="https://github.com/llafuente/" target="_blank">
@@ -16,6 +16,7 @@ Powered by <a href="https://gohugo.io/">Hugo</a>.
 """
 pygmentsuseclasses = false
 pygmentsstyle = "default"
+googleAnalytics = "UA-87763666-1"
 [taxonomies]
 tag = "tags"
 category = "categories"
@@ -58,7 +59,7 @@ series = "series"
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "Luis Lafuente dev blog. Unity, web development, arduino... coding!"
+    about = "Luis Lafuente dev blog in english... you have being warned!<br />From Madrid, deep inside the dark matter taliking about: Unity, web development, arduino, games... and maybe more."
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
