@@ -2,7 +2,7 @@
 draft = false
 title = "Unity CI: unit test using NUnit (Part I/Many)"
 date = "2016-11-18T21:56:49+01:00"
-tags = [ "C#", "CI", "Unity" ]
+tags = [ "c#", "ci", "unity", "testing" ]
 categories = [ "Unity" ]
 series = [ "Unity CI" ]
 summary = """
@@ -34,7 +34,7 @@ In this epidode we focus on OSX unit test using
 Why not Linux ?
 
 * OSX Editor is +500mb. Linux is about 2gb
-* Linux build can't be trusted at this point. I have many problems with the
+* Linux build can't be trusted at this moment. I have many problems with the
 editor I expect problems with CI, will see.
 
 For integration test we will use [Appveyor](https://www.appveyor.com).
@@ -112,7 +112,7 @@ cat $(pwd)/log-unit-test.txt
 cat $(pwd)/unit-test-results.xml
 {{< /highlight >}}
 
-Why select your namespace? *-editorTestsFilter YOUR_NAMESPACE*
+*NOTICE*: Why select your namespace? (`-editorTestsFilter YOUR_NAMESPACE`)
 
 Remember that we are installing UnityTestTools, that has some unit test
 examples. We don't want to execute them, mostly because they fail.
@@ -175,7 +175,7 @@ game code, so unit test won't have access to those properties.
 
 #### Replace Debug.LogWarning/LogError with Assertions
 
-Debug do not throw an error that NUnint can catch. It was fine while manually
+Debug.* do not throw an error that NUnint can catch. It was fine while manually
 testing to see those errors in the Console but Assertions has the same effect
 and it's unit test friendly.
 
@@ -186,7 +186,7 @@ and it's unit test friendly.
 RequireComponent only works on Editor/Unity runtime.
 
 Most of the times you will use `GetComponent<Type>()` result thinking
-it's safe... but it's not.
+it's safe... but it's not! I mean it!
 `AddComponent<Type>()` do not add required components while unit testing.
 And that lead `GetComponent<Type>()` to *NullReferenceException*.
 
@@ -199,14 +199,14 @@ Assert.IsNotNull(body, "BoxCollider2D is required: " + gameObject.name);
 
 #### Unity events should be public
 
-Like before, Unity don't require `Start`, `OnEnable` (etc.) to be public,
-but when you are unit testing you are outside "the Unity runtime".
+Like before, Unity don't require `Start`, `OnEnable` (etc.) to be *public*,
+but when you are unit testing you are outside the "Unity runtime".
 Nobody will call `Start` for you.
 
 That's the main reason that people think MonoBehaviours cannot be unit tested...
 nonsene! It just means that you have to manually emulate Unity.
 
-Another good practice, is to check object integrity (Assertions) at `Start`
+Another good practice, is to check object integrity (with Assertions) at `Start`
 method. I found out that Start in better than `OnEnable`, but it's mostly a
 personal preference.
 
@@ -220,9 +220,10 @@ LayerMask lm = (1 << 2) | (1 << 3); // will check 2nd (2) or 3rd (4) layer
 
 #### Do not use Assert.Pass();
 
-`Assert.Pass();` Creates even more XML in the already unreadble result file XML.
+`Assert.Pass();` Creates even more XML tags in the already terminal-unreadable
+result file.
 
 #### Use external Loggin system
 
 Debug.Log/Warning/Error will generate at least 20 lines in unity logFile
-because it include the backtrace, totally unreadble.
+because it include the backtrace, totally unreadable.

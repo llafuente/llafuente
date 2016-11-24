@@ -9,16 +9,16 @@ date = "2016-11-21T16:31:35+01:00"
 title = "Create static blog with hugo, s3 & cloudfront"
 tags = [
   "aws",
+  "aws-cli",
   "hugo",
   "s3",
-  "cloudfront",
-  "webdev",
+  "cloudfront"
 ]
 
 +++
 
 S3 have website hosting support for static sites long time, but never
-have time to check. Lately I spend some time again with AWS and decide to
+have time to check. Lately I have spent some time again with AWS and decide to
 create this blog and share everything in a more readable way
 (rather than the github-readme way).
 
@@ -26,10 +26,10 @@ I decide to create the blog using [hugo](http://www.gohugo.io) because I
 already know [Jekyll](https://jekyllrb.com/). Jekyll is in ruby... and I
 prefer not to code anything in ruby... anymore.
 
-The first step is to have a [hugo](http://www.gohugo.io) blog ready
+The first step is to have a [hugo](http://www.gohugo.io) blog ready.
 Follow their instructions it's mostly a searching and reading process, no magic.
 
-Here are the initial steps for completeness.
+Here are the initial steps for completing.
 
 {{< highlight bash >}}
 # create the hugo site in CWD
@@ -52,27 +52,27 @@ Now you have a hugo blog with one post and a theme.
 Time to read themes/xxx/readme.md and configure your blog-theme editing
 `./config.toml`.
 
-After having a nice and readable first version I pushed to github at
+After having a nice and readable first version, I pushed to github at
 [llafuente/llafuente](https://github.com/llafuente/llafuente).
 
-And now it's time to do the real work, create and deploy.
+And now it's time to do the real work, *create* and *deploy*.
 
 This process will be manual in my case. Having codeship/travis/* to deploy
 the web should be easy, but I don't want to handle branches in this small repo.
-When I finish writting something I could `git push && s3 sync`, no big deal.
+When I finish writing something I could `git push && s3 sync`, no big deal.
 
 *Cloudfront warning*: Took me quite some time to realize cloudfront
-changes are not realtime-ish, in fact there are 10-30 minutes delay.
+changes are not realtime-ish, in fact, there are 10-30 minute delay.
 
 I'm a big fan of create and destroy `AWS` services. So I will share both.
 
 Steps:
 
-* ./create-static-website.sh
-* follow the links displayed to check everything is ok
-* configure your domain CNAME
-* enjoy
-* ./create-static-website.sh to update the website
+* First `./create-static-website.sh`
+* Follow the links displayed to check everything is ok
+* Configure your domain CNAME
+* Enjoy
+* To update the website: `./create-static-website.sh`
 
 
 ### <i class="fa fa-file-o" aria-hidden="true"></i> ./create-static-website.sh
@@ -82,7 +82,7 @@ same path.
 
 Usage:
 
-Create s3 bucket, configure website, www redirection
+Create s3 bucket, configure website and www redirection
 
 {{< quote >}}
 ./create-static-website.sh \\\

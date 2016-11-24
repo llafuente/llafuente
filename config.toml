@@ -59,7 +59,10 @@ series = "series"
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "Luis Lafuente dev blog in english... you have being warned!<br />From Madrid, deep inside the dark matter taliking about: Unity, web development, arduino, games... and maybe more."
+    about = """
+Luis Lafuente dev blog in English... you have been warned!<br />
+From Madrid, deep inside the dark matter talking about: Unity, web development, Arduino, games... and maybe more.
+"""
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
