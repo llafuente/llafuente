@@ -17,6 +17,8 @@ Powered by <a href="https://gohugo.io/">Hugo</a>.
 pygmentsuseclasses = false
 pygmentsstyle = "default"
 googleAnalytics = "UA-87763666-1"
+enableEmoji = true
+
 [taxonomies]
 tag = "tags"
 category = "categories"
