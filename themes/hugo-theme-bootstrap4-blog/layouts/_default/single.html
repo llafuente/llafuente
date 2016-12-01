@@ -22,7 +22,27 @@
         {{ if not .Site.Params.sharingicons.hide }}
           {{ partial "sharing-icons.html" . }}
         {{ end }}
+
+        {{ if .Params.series }}
+          {{ $name := index .Params.series 0 }}
+          <hr/>
+          <footer>
+          <p><a href="" id="series"></a>This is a post in the
+          <b>{{$name}}</b> series.<br/>
+          Other posts in this series:</p>
+
+            {{ $name := $name | urlize }}
+            {{ $series := index .Site.Taxonomies.series $name }}
+            <ul class="series">
+            {{ range $series.Pages }}
+              <li>{{.Date.Format "Jan 02, 2006"}} -
+              <a href="{{.Permalink}}">{{.LinkTitle}}</a></li>
+            {{end}}
+            </ul>
+          </footer>
+        {{end}}
       </article> <!-- /.blog-post -->
+
 
   {{ if .Site.DisqusShortname }}
        {{ partial "disqus.html" . }}
