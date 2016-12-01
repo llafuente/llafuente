@@ -1,27 +1,25 @@
 +++
 draft = false
+title = "Connect lambda function to EC2 instance using SSH"
+date = "2016-11-21T16:31:35+01:00"
+tags = ["aws", "aws-cli", "lambda", "dynamodb", "ec2"]
+categories = ["AWS"]
+series = []
 images = []
 description = ""
-categories = [
-  "AWS",
-]
-date = "2016-11-21T16:31:35+01:00"
-title = "Connect lambda function to EC2 instance using SSH"
-tags = [
-  "aws",
-  "aws-cli",
-  "lambda",
-  "dynamodb",
-  "ec2"
-]
+summary = """
+Lambda functions are very useful for cronjob, but eventually you will need to
+run something inside your architecture or maybe check if your service is
+running... use SSH power!
+"""
 
 +++
 
 Lambda functions can now run in your VPC, AWS documentation is not clear
-about how to setup your function. I got stuck thinking is a policy problem
+about how to setup your function. I got stuck thinking is a policy problem,
 but it was in fact a firewall problem.
 
-This time there is no magic scripts that works, you have to read a create
+This time there are no magic scripts that works, you have to read a create
 your own.
 
 ### Security groups
@@ -35,8 +33,8 @@ aws ec2 create-security-group --group-name lambda --description "open port 22"
 
 ### EC2 Firewall
 
-* ec2 in port 22 from lambda
-* lambda out port 22 to ec2
+* `ec2` **in** port 22 from `lambda`
+* `lambda` **out** port 22 to `ec2`
 
 {{< highlight bash >}}
 LAMBDA_GROUP_ID=$(aws ec2 describe-security-groups --group-names lambda \
@@ -64,7 +62,7 @@ aws ec2 authorize-security-group-egress \
 {{< /highlight >}}
 
 
-# Create lambda function
+### Create lambda function
 
 {{< highlight javascript >}}
 

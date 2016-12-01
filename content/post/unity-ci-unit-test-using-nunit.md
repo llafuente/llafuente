@@ -5,10 +5,13 @@ date = "2016-11-18T21:56:49+01:00"
 tags = [ "c#", "ci", "unity", "testing" ]
 categories = [ "Unity" ]
 series = [ "Unity CI" ]
+images = []
+description = ""
 summary = """
-First part of an unkown journy to setup a full CI on windows, linux and OSX.
+First part of an unknown journey to set up a full CI on Windows, Linux and OSX.
 
-In this episode we will focus on travis-ci setup with OSX"""
+In this episode we will focus on travis-ci setup with OSX.
+"""
 
 +++
 

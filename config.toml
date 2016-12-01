@@ -24,6 +24,10 @@ tag = "tags"
 category = "categories"
 series = "series"
 
+[permalinks]
+  post = "/:year/:month/:filename/"
+  code = "/:filename/"
+
 [params]
   # Site author
   author = "Luis Lafuente"
