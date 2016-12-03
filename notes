@@ -12,3 +12,19 @@ http://www.webpagefx.com/tools/emoji-cheat-sheet/
 
 
 http://mediaqueri.es/
+
+
+
+http://llafuente.com.s3-website.eu-central-1.amazonaws.com/
+
+
+* sync
+cd /home/llafuente/llafuente/
+rm -rf public; hugo;
+cd ~/vagrant/aws/
+sh sync-static-website.sh --source=/home/llafuente/llafuente/public --domain=llafuente.com
+* create
+cd ~/vagrant/aws/
+sh create-static-website.sh --source=/home/llafuente/llafuente/public --domain=llafuente.com --root-dummy
+* delete
+sh delete-static-website.sh --source=/home/llafuente/llafuente/public --domain=llafuente.com

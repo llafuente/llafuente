@@ -68,8 +68,22 @@ Steps:
 * First `./create-static-website.sh`
 * Follow the links displayed to check everything is ok
 * Configure your domain CNAME
+
+    I use goddady so I have to swap the redirection logic.
+
+    domain.com redirect to www.domain.com
+    www.domain.com is a CNAME of llafuente.com.s3-website.eu-central-1.amazonaws.com
+
 * Enjoy
-* To update the website: `./create-static-website.sh`
+* To update the website: `./sync-static-website.sh`
+
+    *Remember* if you swap the redirection logic (using `--root-redirect`)
+    when sync use `--domain=www.domain.com` (with wwww)
+
+
+
+The lastest scripts can be found in
+[llafuente/packager](https://github.com/llafuente/packager/tree/master/aws)
 
 
 ### <i class="fa fa-file-o" aria-hidden="true"></i> ./create-static-website.sh
@@ -79,12 +93,21 @@ same path.
 
 Usage:
 
-Create s3 bucket, configure website and www redirection
+Create s3 bucket (domain.com), configure website and www.domain.com redirection domain.com
 
 {{< quote >}}
 ./create-static-website.sh \\\
 --domain=llafuente.com \\\
 --source=/var/home/llafuente/blog/public
+{{< / quote >}}
+
+Create s3 bucket (www.domain.com), configure website and domain.com redirection to www.domain.com
+
+{{< quote >}}
+./create-static-website.sh \\\
+--domain=llafuente.com \\\
+--source=/var/home/llafuente/blog/public \\\
+--root-redirect
 {{< / quote >}}
 
 Create s3 bucket, configure website, www redirection and create a
@@ -123,6 +146,9 @@ case $i in
   --cloudfront)
     CLOUDFRONT="yes";
   ;;
+  --root-redirect)
+    SWAP=1;
+  ;;
   *)
     # unknown option
   ;;
@@ -141,6 +167,16 @@ if [ -z ${DOMAIN} ]; then
   echo "KO"
   exit 1
 fi
+
+if [ -z ${SWAP} ]; then
+  DOMAIN_A=${DOMAIN}
+  DOMAIN_B="www.${DOMAIN}"
+else
+  DOMAIN_B=${DOMAIN}
+  DOMAIN_A="www.${DOMAIN}"
+fi
+
+
 
 # full list: "AllowedMethods": ["GET", "PUT", "POST", "DELETE"]
 tee /tmp/cors.json <<EOF >/dev/null
@@ -171,7 +207,7 @@ tee /tmp/policy.json <<EOF >/dev/null
          "Action": [
            "s3:GetObject"
           ],
-         "Resource": "arn:aws:s3:::${DOMAIN}/*"
+         "Resource": "arn:aws:s3:::${DOMAIN_A}/*"
       },
       {
          "Effect": "Allow",
@@ -179,7 +215,7 @@ tee /tmp/policy.json <<EOF >/dev/null
          "Action": [
            "s3:ListBucket"
           ],
-         "Resource": "arn:aws:s3:::${DOMAIN}"
+         "Resource": "arn:aws:s3:::${DOMAIN_A}"
       }
    ]
 }
@@ -194,7 +230,7 @@ tee /tmp/www.policy.json <<EOF >/dev/null
          "Action": [
            "s3:GetObject"
           ],
-         "Resource": "arn:aws:s3:::www.${DOMAIN}/*"
+         "Resource": "arn:aws:s3:::${DOMAIN_B}/*"
       },
       {
          "Effect": "Allow",
@@ -202,7 +238,7 @@ tee /tmp/www.policy.json <<EOF >/dev/null
          "Action": [
            "s3:ListBucket"
           ],
-         "Resource": "arn:aws:s3:::www.${DOMAIN}"
+         "Resource": "arn:aws:s3:::${DOMAIN_B}"
       }
    ]
 }
@@ -222,7 +258,7 @@ tee /tmp/website.json <<EOF >/dev/null
         "HttpErrorCodeReturnedEquals": "404"
       },
       "Redirect": {
-        "HostName": "${DOMAIN}",
+        "HostName": "${DOMAIN_A}",
         "ReplaceKeyPrefixWith": "#/"
       }
     }
@@ -231,39 +267,39 @@ tee /tmp/website.json <<EOF >/dev/null
 EOF
 
 # create bucket, cors, policy & website
-aws s3 mb "s3://${DOMAIN}"
-aws s3api put-bucket-cors --bucket ${DOMAIN} \
+aws s3 mb "s3://${DOMAIN_A}"
+aws s3api put-bucket-cors --bucket ${DOMAIN_A} \
   --cors-configuration file:///tmp/cors.json
-aws s3api put-bucket-policy --bucket ${DOMAIN} \
+aws s3api put-bucket-policy --bucket ${DOMAIN_A} \
   --policy file:///tmp/policy.json
-aws s3api put-bucket-website --bucket ${DOMAIN} \
+aws s3api put-bucket-website --bucket ${DOMAIN_A} \
   --website-configuration file:///tmp/website.json
 
-./sync-static-website.sh --source=${SOURCE} --domain=${DOMAIN}
+./sync-static-website.sh --source=${SOURCE} --domain=${DOMAIN_A}
 
-# create a dummy website for www.${DOMAIN}, redirect everything to non-www
-aws s3 mb "s3://www.${DOMAIN}"
-aws s3api put-bucket-policy --bucket "www.${DOMAIN}" \
+# create a dummy website for ${DOMAIN_B}, redirect everything to ${DOMAIN_A}
+aws s3 mb "s3://${DOMAIN_B}"
+aws s3api put-bucket-policy --bucket "${DOMAIN_B}" \
   --policy file:///tmp/www.policy.json
-aws s3api put-bucket-cors --bucket "www.${DOMAIN}" \
+aws s3api put-bucket-cors --bucket "${DOMAIN_B}" \
   --cors-configuration file:///tmp/cors.json
 
 tee /tmp/www.website.json <<EOF >/dev/null
 {
   "RedirectAllRequestsTo" : {
-    "HostName" : "${DOMAIN}",
+    "HostName" : "${DOMAIN_A}",
     "Protocol" : "${PROTOCOL}"
   }
 }
 EOF
 
-aws s3api put-bucket-website --bucket "www.${DOMAIN}" \
+aws s3api put-bucket-website --bucket "${DOMAIN_B}" \
   --website-configuration file:///tmp/www.website.json
 
-REGION=$(aws s3api get-bucket-location --bucket ${DOMAIN} \
+REGION=$(aws s3api get-bucket-location --bucket ${DOMAIN_A} \
   --query 'LocationConstraint' --output text)
 
-echo "s3 domain: http://${DOMAIN}.s3-website.${REGION}.amazonaws.com"
+echo "s3 domain: http://${DOMAIN_A}.s3-website.${REGION}.amazonaws.com"
 
 # couldfront
 
@@ -292,8 +328,8 @@ if [ ! -z ${CLOUDFRONT} ]; then
                 "CustomHeaders": {
                     "Quantity": 0
                 },
-                "Id": "S3-${DOMAIN}",
-                "DomainName": "${DOMAIN}.s3.amazonaws.com"
+                "Id": "S3-${DOMAIN_A}",
+                "DomainName": "${DOMAIN_A}.s3.amazonaws.com"
             }
         ],
         "Quantity": 1
@@ -306,7 +342,7 @@ if [ ! -z ${CLOUDFRONT} ]; then
             "Enabled": false,
             "Quantity": 0
         },
-        "TargetOriginId": "S3-${DOMAIN}",
+        "TargetOriginId": "S3-${DOMAIN_A}",
         "ViewerProtocolPolicy": "allow-all",
         "ForwardedValues": {
             "Headers": {
@@ -363,7 +399,7 @@ if [ ! -z ${CLOUDFRONT} ]; then
 EOF
 
   DISTRIBUTION_ID=$(aws cloudfront create-distribution \
-    --origin-domain-name "${DOMAIN}.s3.amazonaws.com" \
+    --origin-domain-name "${DOMAIN_A}.s3.amazonaws.com" \
     --default-root-object index.html
     --query 'Id' --text)
 
@@ -374,6 +410,7 @@ EOF
   echo "NOTE! Now you have to wait a lot for cloudfront to be ready!"
 
 fi
+
 
 {{< /highlight >}}
 
@@ -442,14 +479,24 @@ IS_COMPRESSED=$(file "${SOURCE}/index.html" | grep 'gzip')
 # do not re-compress
 if [ -z ${IS_COMPRESSED} ]; then
   echo "compressing source path"
+  set -e # be sure everything is OK with minification & gzip-ing
 
   # minify
-  find ${SOURCE} -name '*.html' | xargs -I '{}' sh -c "html-minifier --collapse-whitespace --remove-tag-whitespace '{}' | sponge '{}'"
-  # gzip
-  find ${SOURCE} | xargs gzip -9
+    HTMLS=$(find ${SOURCE} -name '*.html')
+    for FILE in ${HTMLS};
+    do
+      echo "minify ${FILE}"
+      html-minifier --collapse-whitespace --remove-tag-whitespace "${FILE}" \
+        | sponge "${FILE}"
+    done
+
+  # gzip files
+  find ${SOURCE} -type f | xargs gzip -9
   # rename .*.gz .*
   find ${SOURCE} -type f -name '*.gz' | \
     while read f; do mv "$f" "${f%.gz}"; done
+
+  set +e
 fi
 
 # sync files
@@ -557,3 +604,43 @@ aws s3 rb s3://www.${DOMAIN} --force
 # aws s3 ls
 
 {{< /highlight >}}
+
+
+### my commands
+
+I use goddady for domains so, like I said, I have to swap the redirection
+logic, here are the commands to create this blog.
+
+**Create**
+
+{{< highlight bash >}}
+cd /home/llafuente/llafuente/ # my blog path
+rm -rf public; hugo; # generate
+cd ~/vagrant/aws/ # where the scripts are
+sh create-static-website.sh \
+  --source=/home/llafuente/llafuente/public \
+  --domain=llafuente.com \
+  --root-redirect
+{{< /highlight >}}
+
+
+**Sync**
+
+{{< highlight bash >}}
+cd /home/llafuente/llafuente/ # my blog path
+rm -rf public; hugo; # generate
+cd ~/vagrant/aws/ # where the scripts are
+sh sync-static-website.sh \
+  --source=/home/llafuente/llafuente/public \
+  --domain=www.llafuente.com 
+{{< /highlight >}}
+
+
+**Delete**
+
+{{< highlight bash >}}
+sh delete-static-website.sh \
+  --source=/home/llafuente/llafuente/public \
+  --domain=llafuente.com
+{{< /highlight >}}
+

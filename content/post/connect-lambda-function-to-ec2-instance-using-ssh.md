@@ -1,5 +1,5 @@
 +++
-draft = false
+draft = true
 title = "Connect lambda function to EC2 instance using SSH"
 date = "2016-11-21T16:31:35+01:00"
 tags = ["aws", "aws-cli", "lambda", "dynamodb", "ec2"]
