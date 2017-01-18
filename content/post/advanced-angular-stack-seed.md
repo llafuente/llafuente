@@ -19,7 +19,7 @@ project to current webpack 2, es6 and NPM.
 I've been working in Angular for 3 years. After some time tooling start to
 improve, as always, there were difficult beginnings (manually beginnings).
 
-# First year (AngularJS 1.1 - 1.2)
+## First year (AngularJS 1.1 - 1.2)
 
 I used [requirejs](http://requirejs.org/).
 It was really painful to write boilerplate that I don't really need.
@@ -30,7 +30,7 @@ past.
 Also used [Grunt](gruntjs.com) for the final build-minification and watch
 partials modification to run grunt-ng-templates.
 
-# Second & Third Year (AngularJS 1.4 - 1.6)
+## Second & Third Year (AngularJS 1.4 - 1.6)
 
 I started using Grunt for all development tasks and Bower for front-end
 dependencies.
@@ -58,7 +58,7 @@ complexity to debug because don't have sorucemaps support.
 I'm not going deeper in the stack this is just a rough into to spot major
 problems: unable to debug, inefficient watchers...
 
-# A Stack for the Future (still wip)
+## A Stack for the Future (still wip)
 
 Here are some reference links I used to build the stack.
 
@@ -162,6 +162,21 @@ This approach has a instant pro: You can move this module around
 and it's working regardless the path.
 While before with grunt I had to adjust the HTML path.
 
+#### Modulas Seed project
+
+Every 'component' of the seed project is a module.
+
+For easy to use I include a module to bundle the entire seed module collection.
+See [seed.js](https://github.com/llafuente/angular-es6-stack/blob/master/app/seed.js)
+
+##### Modules
+
+* JWTAuth: Authentication with JWT
+* stateBusy: display loading box when there is a ui-router router change
+* httpBusy: display loading box when http is in progress.
+* uiRouterRedirect: listen to `RedirectTo` property in states to redirect
+* httpErrorHandling: display a modal with an error from API
+
 ### SASS/CSS
 
 Bootstrap v4 default "CSS engine/preprocessor" is SASS so good bye LESS.
@@ -171,23 +186,6 @@ Like in Javascript, sourcemaps are mandatory.
 Here I lose automation. `Grunt` were wiring all my LESS files into `main.less`.
 I cannot find anything like that for `webpack`, right now wiring is manually.
 
-
-### Seed project is modular.
-
-Every 'component' of the seed project is a module.
-
-For easy to use I include a module to bundle the entire seed module collection.
-See [seed.js](https://github.com/llafuente/angular-es6-stack/blob/master/app/seed.js)
-
-#### Modules
-
-* JWTAuth: Authentication with JWT
-* stateBusy: display loading box when there is a ui-router router change
-* httpBusy: display loading box when http is in progress.
-* uiRouterRedirect: listen to `RedirectTo` property in states to redirect
-* httpErrorHandling: display a modal with an error from API
-
-
 ### Eslint
 
 With `--fix` don't force people to write your way, just fix their nonsense!
@@ -196,14 +194,14 @@ With `--fix` don't force people to write your way, just fix their nonsense!
 npm run lint
 ```
 
-## Karma
+### Karma
 
 Karma support is done using `gulp` but I will move it to `npm run` if find
 time to test on windows.
 
 I don't like Jasmine, I may include TAP here.
 
-## jsDoc
+### jsDoc
 
 I don't know yet if it's an error or not...
 AngularJS use it's own doc system `dgeni`, but configure and setup `dgeni`
@@ -224,9 +222,9 @@ You can follow the stack progress, It's working an open to suggestions.
 The project is meant to be forked and modified. *NOTE* it include examples that
 shouldn't be in your final project.
 
-### TODO list
+## TODO list
 
-#### Hot module Reload
+### Hot module Reload
 
 This is a very nice feature of Webpack. With Angular 1.x is not so easy,
 there are some tradeoff mostly in naming convention but my pride could survive!
