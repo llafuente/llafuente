@@ -1,6 +1,6 @@
 +++
 draft = false
-title = "Unity CI: Linux (Part II/Many)"
+title = "Unity CI: unit test on Linux (Part II/Many)"
 date = "2017-01-16T22:56:49+01:00"
 tags = [ "c#", "ci", "unity", "testing" ]
 categories = [ "Unity" ]
