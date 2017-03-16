@@ -276,24 +276,38 @@ I now have two files together that initialize my app for browser and karma.
 I'm not saying that `AngularJS` did a good job here either.
 
 
-## I miss $httpBackend
+## I miss the good old $httpBackend
 
 $httpBackend usage is more comfortable than Mockbackend. As I said, I develop a library
-to create mocks easily that it's shared in browser/karma context.
+to create mocks easily that it's shared in browser/karma context, just to avoid the 
+pain introduced by MockBackend design.
 
+But this means that Mock in browser is easy and cleaner than before.
 
-# Recap
+## There is no $interpolate
+
+If you need to interpolate your strings before sending the text to a view, you can't (easily).
+Use the Angular 2 parser directly... painfully undocumented
+
+## Angular 2 weight 1 mb
+
+Nothing more to say. Just heavier and slower to compile.
+
+# Recap, final words
 
 Everything is about feelings, `Angular 2` is not bad but if you taste
 `AngularJS` you feel that not your favorite ice-cream flavor.
 
 The learning surface in `Angular 2` has increased and not everything is worth
-it. There are many changes, some are good, and some a very bad. As always
+it. There are many changes, some are good, and some are very bad. As always
 coding is an exercise of solving problems, and `AngularJS` exceed in
 this matter.
 
 `Angular 2` community is smaller, and I really think that `C#` and `Java` people
 will push `Angular 2` while `node` people wil push `AngularJS`.
-As always a battle of tastes.
+As always a battle of tastes and productivity. (Java and productivity in the same
+line...)
 
-Why naming it `Angular 2` when they should named `AngularReact`...
+The real [`issue 9`](https://github.com/golang/go/issues/9) is:
+
+> Why naming it `Angular 2` when they should named `AngularReact`...
