@@ -17,18 +17,15 @@ Angular 2 lack of power is...
 After spending a month with `Angular 2`, I can reliably say `AngularJs`
 is far more powerful and more productive, but also less maintainable.
 
-There are things that can't be done by design that are just necessary.
+There are many things that can't be done by design in `Angular 2` that are easy in `AngularJS` like override a template.
 `Angular 2` is more verbose than `AngularJS`, mostly stuff that's not
 necessary and don't add value, just noise, I'm talking mostly about importing.
-
-`Angular 2` is really no in the good path for programmers that values
-time and productivity, but not everything is bad. Just most of it.
 
 
 ## Scope
 
 `Angular 2` has scopes, don't even think or believe that they dissapear,
-because they don't. But there is a **BIG** differece, there is no inheritance.
+because they don't. But there is a **BIG** differece, there is no usable inheritance, there is, but you can use it or abuse it.
 
 This could be good and bad. I find that using `#xxx` (variable declaration
 in templates) it's a perfect substitute of inheritance.

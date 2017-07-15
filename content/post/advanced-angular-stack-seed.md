@@ -119,7 +119,7 @@ complexity abuses. But...
   Could be avoided using `::` operator or writting a babel plugin,
   but It's just two characters... not a big deal.
 
-This is an example of a nice clean controller in ES5
+This is an example of a nice clean controller in ES5.
 
 ```js
 export default /*@ngInject*/ class UserListController {
@@ -139,6 +139,9 @@ export default /*@ngInject*/ class UserListController {
   }
 }
 ```
+
+There is another solution to use arrow functions but makes unit-testing
+difficut.
 
 #### Angular Config
 
