@@ -17,6 +17,10 @@ http://mediaqueri.es/
 
 http://llafuente.com.s3-website.eu-central-1.amazonaws.com/
 
+# install
+
+curl -o hugo_0.25.1_macOS-64bit.tar.gz https://github.com/gohugoio/hugo/releases/download/v0.25.1/hugo_0.25.1_macOS-64bit.tar.gz
+
 
 * sync
 cd /home/llafuente/llafuente/
@@ -28,3 +32,5 @@ cd ~/vagrant/aws/
 sh create-static-website.sh --source=/home/llafuente/llafuente/public --domain=llafuente.com --root-dummy
 * delete
 sh delete-static-website.sh --source=/home/llafuente/llafuente/public --domain=llafuente.com
+
+

@@ -48,3 +48,8 @@ h4 {
 .recent-post li {
   margin-bottom: 0.5rem;
 }
+
+.nav-inline .nav-item + .nav-item,
+.nav-inline .nav-link + .nav-link {
+  margin-left: 1rem;
+}

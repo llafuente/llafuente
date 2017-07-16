@@ -2,7 +2,7 @@
 draft = false
 title = "Angular 2. Something is wrong."
 date = "2017-05-24T15:13:01+01:00"
-tags = ["Angular2", "AngularJs]
+tags = ["Angular2", "AngularJs"]
 categories = ["AngularJs", "FrontEnd"]
 series = []
 images = []
@@ -34,12 +34,56 @@ something very strange: 1298 open issues.
 **WTF**! That number is huge! so I spend 10 minutes comparing a few projects.
 
 
-|Project  |Open issues|Closed issues|Commits|Pull requests|SLOC   |
-|---------|-----------|-------------|-------|-------------|-------|
-|Angular  |1298       |9167         |7635   |204/6230     |357122 |
-|AngularJS|578        |7918         |8495   |175/7301     |484732 |
-|Node.JS  |738        |4498         |17561  |308/7602     |5843751|
-|Julia    |1889       |9974         |37018  |483/9690     |248676 |
+<table class="table table-striped">
+<thead>
+<tr>
+<th>Project</th>
+<th>Open issues</th>
+<th>Closed issues</th>
+<th>Commits</th>
+<th>Pull requests</th>
+<th>SLOC</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Angular</td>
+<td>1298</td>
+<td>9167</td>
+<td>7635</td>
+<td><sup>204</sup>⁄<sub>6230</sub></td>
+<td>357122</td>
+</tr>
+
+<tr>
+<td>AngularJS</td>
+<td>578</td>
+<td>7918</td>
+<td>8495</td>
+<td><sup>175</sup>⁄<sub>7301</sub></td>
+<td>484732</td>
+</tr>
+
+<tr>
+<td>Node.JS</td>
+<td>738</td>
+<td>4498</td>
+<td>17561</td>
+<td><sup>308</sup>⁄<sub>7602</sub></td>
+<td>5843751</td>
+</tr>
+
+<tr>
+<td>Julia</td>
+<td>1889</td>
+<td>9974</td>
+<td>37018</td>
+<td><sup>483</sup>⁄<sub>9690</sub></td>
+<td>248676</td>
+</tr>
+</tbody>
+</table>
 
 
 

@@ -2,7 +2,7 @@
 draft = false
 title = "Angular 2. First steps."
 date = "2017-02-15T19:56:35+01:00"
-tags = ["Angular2", "AngularJs]
+tags = ["Angular2", "AngularJs"]
 categories = ["AngularJs", "FrontEnd"]
 series = []
 images = []

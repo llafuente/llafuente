@@ -1,10 +1,10 @@
 +++
 draft = false
 title = "Modern bash-ing"
-date = "2017-01-16T22:56:49+01:00"
-tags = [ "c#", "ci", "unity", "testing" ]
-categories = [ "Unity" ]
-series = [ "Unity CI" ]
+date = "2017-06-01T14:35:17+02:00"
+tags = [ "bash", "linux" ]
+categories = [ "bash", "BackEnd" ]
+series = []
 images = []
 description = ""
 summary = """
