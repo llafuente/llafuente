@@ -167,4 +167,34 @@ After many years of working with bash I end up with a few good partices,
 some I use
 
 
+# Handling exit codes
 
+Exit codes can be tricky to handle the most common usage is the combination
+`exit` with `$?`.
+
+The problem raise when you call another script inside your script and
+the subscript call `exit` because It also exit you main script.
+This is not an error because (maybe) you are `sourcing` a script inside
+your main script.
+
+What you need to do is to execute the script in another process, so exit only
+affect itself.
+
+
+{{< highlight bash >}}
+#!/bin/sh
+
+# sourcing a script, just for reference purposes
+# ./subscript.sh
+
+# run the script in a separate process
+$(./subscript.sh)
+
+SUBSCRIPT_STATUS=$?
+if [ $SUBSCRIPT_STATUS -eq 0 ]; then
+  echo "subscript.sh ran successfully"
+else
+  echo "subscript.sh crapped out"
+fi
+
+{{< /highlight >}}
