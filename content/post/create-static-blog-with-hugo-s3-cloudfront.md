@@ -26,7 +26,7 @@ prefer not to code anything in ruby... anymore.
 The first step is to have a [hugo](http://www.gohugo.io) blog ready.
 Follow their instructions it's mostly a searching and reading process, no magic.
 
-Here are the initial steps for completing.
+Here are the initial steps.
 
 {{< highlight bash >}}
 # create the hugo site in CWD
@@ -632,7 +632,7 @@ rm -rf public; hugo; # generate
 cd ~/vagrant/aws/ # where the scripts are
 sh sync-static-website.sh \
   --source=/home/llafuente/llafuente/public \
-  --domain=www.llafuente.com 
+  --domain=www.llafuente.com
 {{< /highlight >}}
 
 

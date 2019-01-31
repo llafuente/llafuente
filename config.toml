@@ -15,9 +15,11 @@ Powered by <a href="https://gohugo.io/">Hugo</a>.
 </a>
 """
 pygmentsuseclasses = false
-pygmentsstyle = "default"
+pygmentsstyle = "monokai"
 googleAnalytics = "UA-87763666-1"
 enableEmoji = true
+
+staticDir = ["static"]
 
 [taxonomies]
 tag = "tags"

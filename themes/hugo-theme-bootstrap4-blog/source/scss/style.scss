@@ -28,6 +28,7 @@ $font-family-base: 'Anonymous Pro', monospace;
 }
 pre {
   padding: 1em;
+  margin: 0.25rem;
 }
 .highlight {
   border-radius: .25rem;
@@ -52,4 +53,7 @@ h4 {
 .nav-inline .nav-item + .nav-item,
 .nav-inline .nav-link + .nav-link {
   margin-left: 1rem;
+}
+article img {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }

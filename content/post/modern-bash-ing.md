@@ -13,19 +13,23 @@ Best practices for developing/debugging complex bash scripts.
 
 +++
 
-# Strict mode
+Nothing here is new, but it's a good collection to make your life easier.
+
+## Use Strict mode
 
 {{< highlight bash >}}
 #!/bin/bash
 set -euo pipefail
 {{< /highlight >}}
 
-## Bail on failure: set -e
+### Bail on failure: set -e
 
-This make your script to exit when any command inside fail (non-zero exit
-status). Bash is very forgibbing and continue executing by default.
+This makes your script to exit when any command inside fail (non-zero exit
+status). Bash is very forgiving and continue executing by default.
 
-Now you have to handle errors in your scripts.
+Now you have to handle errors in your scripts or at least makes sure you know
+this what may fail.
+
 To allow errors you have two patterns to learn.
 
 
@@ -41,30 +45,36 @@ your-failure-command2
 set -e
 {{< /highlight >}}
 
-## Bail on undefined: set -u
 
-Throw an error if access an undefined variable with exceptions of: `$*` and
-`$@`. But dont trow if you are using the value in default assignament.
+### Bail on undefined: set -u
+
+Throw an error if undefined variable is accessed with the exceptions of: `$*` and
+`$@`. But don't throw if you are using the value in default assignment.
 
 {{< highlight bash >}}
 set -u
 bar=$foo
-
-echo $bar
+# OUTPUT: -bash: foo: unbound variable
 
 bar=${foo:-alpha}
+echo $bar
+# OUTPUT: alpha
 
 # Now we set foo explicitly:
 foo="beta"
 
 # ... and the default value is ignored. Here $bar is set to "beta":
 bar=${foo:-alpha}
+echo $bar
+# OUTPUT: beta
 
 # To make the default an empty string, use ${VARNAME:-}
 empty_string=${some_undefined_var:-}
+echo $empty_string
+# OUTPUT:
+
 {{< /highlight >}}
 
-OUTPUT
 
 
 Note that subsequent files (`source`d) also have the same flags.
@@ -78,96 +88,103 @@ set -u
 
 
 
-# fail on pipe errors: set -o pipefail
+### fail on pipe errors: set -o pipefail
 
 Pipe return code is always the last one. The return codes from previous comands
 are ignored (even with `set -e`).
 
-This force bash to use the first return code error as command return code.
+This force bash to listen all return error codes, and fail on the first error.
 
 {{< highlight bash >}}
 set -o pipefail
 cat  /non-existent-file | sort
-> ???
+# OUTPUT: cat: /non-existent-file: No such file or directory
+
 echo $?
-> 2
-# TODO show the error
+# OUTPUT: 1
+
 grep some-string /non/existent/file | sort
+# OUTPUT: grep: /non/existent/file: No such file or directory
 
 {{< /highlight >}}
 
 
-# Debug
+## Debug
 
-Many times in far past I debugged scripts using `echo`. Right now, `echo`
-is more a comment that a debug utility. Unlike almost every language
-Bash have a `print what i'm going to execute` that is priceless.
+### Output tracing: set -x
+
+Many times in the far past I debugged scripts using `echo`. Right now, `echo`
+is more a info loggin than a debuging utility. Unlike almost every language
+Bash have a `print what I'm going to execute` that is priceless, priceless!
 
 {{< highlight bash >}}
-set -e
+set -x
+echo $HOME
+# OUTPUT: + echo /c/Users/llafuente
+# OUTPUT: /c/Users/llafuente
 {{< /highlight >}}
 
+You see the command to be executed with all variables resolved, again priceless!
 
-# Pipe debug
+### Pipe debug
+
+Did you have a sporadic failure in a pipe command? Use this to debug it!
 
 {{< highlight bash >}}
 blabla | tee debug-file | blablabla-continue
 {{< /highlight >}}
 
-`debug-file` contains the contents of the pipe, tee also print into stdout :)
+`debug-file` contains the contents of the pipe and `tee` also print into stdout.
 
-# Multiline strings
+## Multiline strings
 
-How many times do i have to echo 5 `echo`s in consecutive lines.
-Please use:
+Stop using X echo lines!
 
 {{< highlight bash >}}
-cat <<DELIM | tee /your-file
+cat <<DELIM | tee file
 one sheep
 two sheeps
 three sheeps
 DELIM
 {{< /highlight >}}
 
-I know what are you thinking: `tee` is not necessary (but it is).
-This is a pattern that can be used for many thins:
+I know what are you thinking: `tee` is not necessary.
+To print to stdout I just removed, ok.
+To print to a file I will redirect stdout to file.
+What about a root file?
 
+This is a pattern to copy&paste and adapt all use cases.
 
 {{< highlight bash >}}
 # overwrite file not accessible under original user (ex: root)
-cat <<DELIM | sudo tee /your-file
+cat <<DELIM | sudo tee /etc/file
 DELIM
 # append root file
-cat <<DELIM | sudo tee -a /your-file
+cat <<DELIM | sudo tee -a /root/file
+DELIM
+# stdout
+cat <<DELIM
 DELIM
 {{< /highlight >}}
 
 
-# Deferred execution / cleanups
+## Deferred execution / cleanups
 
 Execute a function at the end of the script.
-
-TODO test script chain
 
 {{< highlight bash >}}
 TMP_PATH=$(mktemp -d)
 
+# this function will be executed when exit, error or success
 function finish {
   rm -rf ${TMP_PATH}
 }
-# this function will be executed when exit (even on error execution)
 trap finish EXIT
+
+# ...
 {{< /highlight >}}
 
-
-# http://redsymbol.net/articles/unofficial-bash-strict-mode/
-# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-
-After many years of working with bash I end up with a few good partices,
-some I use
-
-
-# Handling exit codes
+## Handling exit codes
 
 Exit codes can be tricky to handle the most common usage is the combination
 `exit` with `$?`.
@@ -192,9 +209,15 @@ $(./subscript.sh)
 
 SUBSCRIPT_STATUS=$?
 if [ $SUBSCRIPT_STATUS -eq 0 ]; then
-  echo "subscript.sh ran successfully"
+  echo "subscript.sh success"
 else
-  echo "subscript.sh crapped out"
+  echo "subscript.sh failure"
 fi
 
 {{< /highlight >}}
+
+## references
+
+* http://redsymbol.net/articles/unofficial-bash-strict-mode/
+
+* https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/

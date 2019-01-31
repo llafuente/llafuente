@@ -121,7 +121,7 @@ complexity abuses. But...
 
 This is an example of a nice clean controller in ES5.
 
-```js
+{{< highlight js >}}
 export default /*@ngInject*/ class UserListController {
   constructor($http) {
     this.$http = $http;
@@ -138,7 +138,7 @@ export default /*@ngInject*/ class UserListController {
     this.list = response.data;
   }
 }
-```
+{{< /highlight >}}
 
 There is another solution to use arrow functions but makes unit-testing
 difficut.
